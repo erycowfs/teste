@@ -1,0 +1,32 @@
+const express = require("express")
+const mercadopago = require("mercadopago")
+
+const router = express.Router()
+
+mercadopago.configure({
+access_token: "SEU_TOKEN_MERCADOPAGO"
+})
+
+const Stripe = require("stripe")
+
+const stripe = Stripe("SUA_CHAVE")
+
+router.post("/pix", async (req,res)=>{
+
+const payment = await mercadopago.payment.create({
+
+transaction_amount: req.body.total,
+
+payment_method_id: "pix",
+
+payer: {
+email: "cliente@email.com"
+}
+
+})
+
+res.json(payment.body)
+
+})
+
+module.exports = router
